@@ -28,3 +28,12 @@ select[multiple] {
     height: 40vh;
     border: 1px black solid;
 }
+
+.disable-scroll {
+	overflow-y:hidden;
+}
+
+.scrollable {
+	overflow: auto;
+	height: 40vh;
+}
