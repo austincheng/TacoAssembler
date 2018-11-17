@@ -1,3 +1,4 @@
+/* Retrives the data for the specific part of the taco and fills the HTML select. */
 var getData = function(part) {
 	var request = new XMLHttpRequest();
 	request.open('GET', 'https://tacos-ocecwkpxeq.now.sh/' + part, true);
@@ -19,13 +20,16 @@ var getData = function(part) {
 	request.send();
 }
 
+/* Getting all the data. */
 getData('shells');
 getData('baseLayers');
 getData('mixins');
 getData('condiments');
 getData('seasonings');
 
-currentStuff = {'mixins': [], 'condiments': []};
+/* Represents what is currently selected in the mixins and condiments. */
+currentSelection = {'mixins': [], 'condiments': []};
+/* Deals with a selection on mixins or condiments and adjusts based on if there was an error. */
 var selectChange = function(part) {
 	var select = document.getElementById(part);
 	var selected = getSelectedOptions(select);
@@ -39,7 +43,7 @@ var selectChange = function(part) {
 
 	if (selected.length > threshold) {
 		for (var option of selected) {
-			if (currentStuff[part].indexOf(option) == -1) {
+			if (currentSelection[part].indexOf(option) == -1) {
 				option.selected = false;
 				break;
 			}
@@ -47,12 +51,13 @@ var selectChange = function(part) {
 		error.innerHTML = 'You can only select up to ' + threshold + ' ' + part;
 	} else if (selected.length == 1 || selected.length == threshold - 1) {
 		error.innerHTML = '';
-		currentStuff[part] = selected;
+		currentSelection[part] = selected;
 	} else {
-		currentStuff[part] = selected;
+		currentSelection[part] = selected;
 	}
 }
 
+/* Gets everything that was selected for the given HTML select as a list of texts. */
 var getSelected = function(select) {
 	var options = select.options;
 	var selected = [];
@@ -64,6 +69,7 @@ var getSelected = function(select) {
 	return selected;
 }
 
+/* Gets everything that was selected for the given HTML select as a list of HTML options. */
 var getSelectedOptions = function(select) {
 	var options = select.options;
 	var selected = [];
@@ -75,6 +81,7 @@ var getSelectedOptions = function(select) {
 	return selected;
 }
 
+/* Formats the list into a grammatical string. */
 var getFormattedString = function(items) {
 	if (items.length === 1) {
 		return items[0];
@@ -94,6 +101,7 @@ var getFormattedString = function(items) {
 	}
 }
 
+/* Creates a taco and adds it to the list, displaying something different whether it was computer generated (random) or not. */
 var createTaco = function(random = false) {
 	var shell = getSelected(document.getElementById('shells'))[0];
 	var baseLayer = getSelected(document.getElementById('baseLayers'))[0];
@@ -131,23 +139,27 @@ var createTaco = function(random = false) {
 	}
 }
 
+/* Strikes through the text upon mouse over. */
 var strikeText = function(evt) {
 	var li = evt.target;
 	li.style.textDecoration = 'line-through';
 	li.style.cursor = 'pointer';
 }
 
+/* Removes text decoration upon mouse out. */
 var restoreText = function(evt) {
 	var li = evt.target;
 	li.style.textDecoration = 'none';
 	li.style.cursor = 'none';
 }
 
+/* Removes the item from list upon mouse click. */
 var removeText = function(evt) {
 	var li = evt.target;
 	li.parentNode.removeChild(li);
 }
 
+/* Creates a random taco and adds it to the list. */
 var randomTaco = function() {
 	var shells = document.getElementById('shells').options;
 	var baseLayers = document.getElementById('baseLayers').options;
@@ -198,10 +210,12 @@ var randomTaco = function() {
 	createTaco(true);
 }
 
+/* Gets a random integer between start (inclusive) and end (exclusive) */
 var getRandomInt = function(start, end) {
 	return Math.floor((Math.random() * (end - start)) + start);
 }
 
+/* Resets what is current selected in mixins and condiments. */
 var resetSelect = function() {
 	var mixins = document.getElementById('mixins').options;
 	var condiments = document.getElementById('condiments').options;
@@ -213,6 +227,7 @@ var resetSelect = function() {
 	}
 }
 
+/* Removes all tacos from the list. */
 var removeAllTacos = function() {
 	var list = document.getElementById('taco-list');
 	list.innerHTML = '';
