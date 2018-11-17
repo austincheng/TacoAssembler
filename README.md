@@ -1,4 +1,4 @@
-# geostopwatch
-Stopwatch web application that records times and locations in a history table
+# tacoassembly
+Taco Assembly Web Application
 
 Based on ClickTime 2018 Summer Internship Challenge Problem
