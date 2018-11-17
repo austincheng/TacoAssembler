@@ -10,33 +10,33 @@
 		<h1>Taco Assembly</h1>
 
 		<div id="selector-div">
-			<div class="taco-part">
+			<div class="taco-part" style="background:#ffcc00">
 				<h2>Shell</h2>
 				<select id="shells">
 				</select>
 			</div>
 
-			<div class="taco-part">
+			<div class="taco-part" style="background:#993333">
 				<h2>Base Layer</h2>
 				<select id="baseLayers">
 				</select>
 			</div>
 
-			<div class="taco-part">
-				<h2>Mixins</h2>
+			<div class="taco-part" style="background:#00cc66">
+				<h2>Mixins (Limit 2)</h2>
 				<p id="error-mixins" style="color:red"></p>
 				<select id="mixins" onchange="selectChange('mixins')" multiple>
 				</select>
 			</div>
 
-			<div class="taco-part">
-				<h2>Condiments</h2>
+			<div class="taco-part" style="background:#ffff00">
+				<h2>Condiments (Limit 3)</h2>
 				<p id="error-condiments" style="color:red"></p>
 				<select id="condiments" onchange="selectChange('condiments')" multiple>
 				</select>
 			</div>
 
-			<div class="taco-part">
+			<div class="taco-part" style="background:#ff0000">
 				<h2>Seasoning</h2>
 				<select id="seasonings">
 				</select>
@@ -44,10 +44,15 @@
 		</div>
 
 		<div id="create-taco-div" align="center">
-			<button id="create-taco" onclick="createTaco()">Create Taco!</button>
+			<button id="create-taco" onclick="createTaco()" class="large-button">Create Taco!</button>
+			<button id="random-taco" onclick="randomTaco()" class="large-button">Random Taco!</button>
+			<button id="reset-select" onclick="resetSelect()" class="large-button">Reset Select</button>
 		</div>
 
 		<div id="list-div" class="scrollable">
+			<h2>My Tacos</h2>
+			<p>Click on a list item to remove the taco.</p>
+			<button onclick="removeAllTacos()">Remove All</button>
 			<ol id="taco-list">
 			</ol>
 		</div>

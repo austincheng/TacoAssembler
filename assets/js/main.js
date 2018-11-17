@@ -46,6 +46,34 @@ var doStuff = function() {
 
 getAllData();
 
+currentStuff = {'mixins': [], 'condiments': []};
+var selectChange = function(part) {
+	var select = document.getElementById(part);
+	var selected = getSelectedOptions(select);
+	var error = document.getElementById('error-' + part);
+	var threshold;
+	if (part === 'mixins') {
+		threshold = 2;
+	} else if (part === 'condiments') {
+		threshold = 3;
+	}
+
+	if (selected.length > threshold) {
+		for (var option of selected) {
+			if (currentStuff[part].indexOf(option) == -1) {
+				option.selected = false;
+				break;
+			}
+		}
+		error.innerHTML = 'You can only select up to ' + threshold + ' ' + part;
+	} else if (selected.length == 1 || selected.length == threshold - 1) {
+		error.innerHTML = '';
+		currentStuff[part] = selected;
+	} else {
+		currentStuff[part] = selected;
+	}
+}
+
 var getSelected = function(select) {
 	var options = select.options;
 	var selected = [];
@@ -87,7 +115,7 @@ var getFormattedString = function(items) {
 	}
 }
 
-var createTaco = function() {
+var createTaco = function(random = false) {
 	var shell = getSelected(document.getElementById('shells'))[0];
 	var baseLayer = getSelected(document.getElementById('baseLayers'))[0];
 	var mixins = getSelected(document.getElementById('mixins'));
@@ -105,39 +133,106 @@ var createTaco = function() {
 	if (mixins.length > 0 && condiments.length > 0) {
 		var list = document.getElementById('taco-list');
 		var item = document.createElement('li');
-		item.innerHTML = 'You created a taco made of ' + shell;
+		if (random) {
+			item.innerHTML = 'The computer has served you ';
+		} else {
+			item.innerHTML = 'You created ';
+		}
+		item.innerHTML += 'a taco made of ' + shell;
 		item.innerHTML += ' with ' + baseLayer;
 		item.innerHTML += ', mixed in with ' + getFormattedString(mixins);
 		item.innerHTML += ', sprinkled with ' + getFormattedString(condiments);
 		item.innerHTML += ', covered in ' + seasoning + '!';
+		item.onmouseover = strikeText;
+		item.onmouseout = restoreText;
+		item.onclick = removeText;
 		list.appendChild(item);
 	}
 }
 
-currentStuff = {'mixins': [], 'condiments': []};
-var selectChange = function(part) {
-	var select = document.getElementById(part);
-	var selected = getSelectedOptions(select);
-	var error = document.getElementById('error-' + part);
-	var threshold;
-	if (part === 'mixins') {
-		threshold = 2;
-	} else if (part === 'condiments') {
-		threshold = 3;
+var strikeText = function(evt) {
+	var li = evt.target;
+	li.style.textDecoration = 'line-through';
+	li.style.cursor = 'pointer';
+}
+
+var restoreText = function(evt) {
+	var li = evt.target;
+	li.style.textDecoration = 'none';
+	li.style.cursor = 'none';
+}
+
+var removeText = function(evt) {
+	var li = evt.target;
+	li.parentNode.removeChild(li);
+}
+
+var randomTaco = function() {
+	var shells = document.getElementById('shells').options;
+	var baseLayers = document.getElementById('baseLayers').options;
+	var mixins = document.getElementById('mixins').options;
+	var condiments = document.getElementById('condiments').options;
+	var seasonings = document.getElementById('seasonings').options;
+
+	resetSelect();
+
+	var shell = shells[getRandomInt(0, shells.length)];
+	var baseLayer = baseLayers[getRandomInt(0, baseLayers.length)];
+
+	var numMixins = getRandomInt(1, 3);
+	var mixinValues = [];
+	var usedIndices = [];
+	for (var i = 0; i < numMixins; i++) {
+		var index = getRandomInt(0, mixins.length);
+		while (usedIndices.indexOf(index) != -1) {
+			index = getRandomInt(0, mixins.length);
+		}
+		mixinValues.push(mixins[index]);
+		usedIndices.push(index);
 	}
 
-	if (selected.length > threshold) {
-		for (var option of selected) {
-			if (currentStuff[part].indexOf(option) == -1) {
-				option.selected = false;
-				break;
-			}
+	var numCondiments = getRandomInt(1, 4);
+	var condimentValues = [];
+	usedIndices = [];
+	for (var i = 0; i < numCondiments; i++) {
+		var index = getRandomInt(0, condiments.length);
+		while (usedIndices.indexOf(index) != -1) {
+			index = getRandomInt(0, condiments.length);
 		}
-		error.innerHTML = 'You can only select up to ' + threshold + ' ' + part;
-	} else if (selected.length == 1 || selected.length == threshold - 1) {
-		error.innerHTML = '';
-		currentStuff[part] = selected;
-	} else {
-		currentStuff[part] = selected;
+		condimentValues.push(condiments[index]);
+		usedIndices.push(index);
 	}
+
+	var seasoning = seasonings[getRandomInt(0, seasonings.length)];
+
+	shell.selected = true;
+	baseLayer.selected = true;
+	for (var mixin of mixinValues) {
+		mixin.selected = true;
+	}
+	for (var condiment of condimentValues) {
+		condiment.selected = true;
+	}
+	seasoning.selected = true;
+	createTaco(true);
+}
+
+var getRandomInt = function(start, end) {
+	return Math.floor((Math.random() * (end - start)) + start);
+}
+
+var resetSelect = function() {
+	var mixins = document.getElementById('mixins').options;
+	var condiments = document.getElementById('condiments').options;
+	for (var mixin of mixins) {
+		mixin.selected = false;
+	}
+	for (var condiment of condiments) {
+		condiment.selected = false;
+	}
+}
+
+var removeAllTacos = function() {
+	var list = document.getElementById('taco-list');
+	list.innerHTML = '';
 }

@@ -13,14 +13,19 @@ select[multiple] {
 }
 
 #create-taco {
-	background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    margin: 4px 2px;
-    cursor: pointer;
-    font-size: 20px;
+	background-color: green;
+	border: none;
+}
+
+#random-taco {
+	background-color: white;
+	border-color: black;
+	color: black;
+}
+
+#reset-select {
+	background-color: red;
+	border: none;
 }
 
 .taco-part {
@@ -36,4 +41,13 @@ select[multiple] {
 .scrollable {
 	overflow: auto;
 	height: 40vh;
+}
+
+.large-button {
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 20px;
 }
