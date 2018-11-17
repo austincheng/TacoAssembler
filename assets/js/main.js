@@ -1,4 +1,4 @@
-var getData = function(part, callback) {
+var getData = function(part) {
 	var request = new XMLHttpRequest();
 	request.open('GET', 'https://tacos-ocecwkpxeq.now.sh/' + part, true);
 	request.onload = function () {
@@ -11,7 +11,6 @@ var getData = function(part, callback) {
 				option.text = item.name;
 				select.add(option);
 			}
-			callback();
 		} else {
 			alert('Could Not Read Data')
 		}
@@ -20,31 +19,11 @@ var getData = function(part, callback) {
 	request.send();
 }
 
-var getAllData = function() {
-	getData('shells', getBaseLayers);
-}
-
-var getBaseLayers = function() {
-	getData('baseLayers', getMixins);
-}
-
-var getMixins = function() {
-	getData('mixins', getCondiments);
-}
-
-var getCondiments = function() {
-	getData('condiments', getSeasonings);
-}
-
-var getSeasonings = function() {
-	getData('seasonings', doStuff);
-}
-
-var doStuff = function() {
-	console.log('yay');
-}
-
-getAllData();
+getData('shells');
+getData('baseLayers');
+getData('mixins');
+getData('condiments');
+getData('seasonings');
 
 currentStuff = {'mixins': [], 'condiments': []};
 var selectChange = function(part) {
@@ -121,16 +100,18 @@ var createTaco = function(random = false) {
 	var mixins = getSelected(document.getElementById('mixins'));
 	var condiments = getSelected(document.getElementById('condiments'));
 	var seasoning = getSelected(document.getElementById('seasonings'))[0];
+	var errorMixin = document.getElementById('error-mixins');
+	var errorCondiment = document.getElementById('error-condiments');
 	if (mixins.length === 0) {
-		var error = document.getElementById('error-mixins');
-		error.innerHTML= 'You must select at least 1 mixin.';
+		errorMixin.innerHTML= 'You must select at least 1 mixin.';
 	} 
 	if (condiments.length === 0) {
-		var error = document.getElementById('error-condiments');
-		error.innerHTML= 'You must select at least 1 condiment.';
+		errorCondiment.innerHTML= 'You must select at least 1 condiment.';
 	}
 
 	if (mixins.length > 0 && condiments.length > 0) {
+		errorMixin.innerHTML = '';
+		errorCondiment.innerHTML = '';
 		var list = document.getElementById('taco-list');
 		var item = document.createElement('li');
 		if (random) {
