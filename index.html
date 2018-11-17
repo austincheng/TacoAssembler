@@ -8,6 +8,7 @@
 	</head>
 	<body>
 		<h1>Taco Assembly</h1>
+
 		<div id="selector-div">
 			<div class="taco-part">
 				<h2>Shell</h2>
@@ -23,13 +24,15 @@
 
 			<div class="taco-part">
 				<h2>Mixins</h2>
-				<select id="mixins" multiple>
+				<p id="error-mixins" style="color:red"></p>
+				<select id="mixins" onchange="selectChange('mixins')" multiple>
 				</select>
 			</div>
 
 			<div class="taco-part">
 				<h2>Condiments</h2>
-				<select id="condiments" multiple>
+				<p id="error-condiments" style="color:red"></p>
+				<select id="condiments" onchange="selectChange('condiments')" multiple>
 				</select>
 			</div>
 
@@ -38,6 +41,15 @@
 				<select id="seasonings">
 				</select>
 			</div>						
+		</div>
+
+		<div id="create-taco-div" align="center">
+			<button id="create-taco" onclick="createTaco()">Create Taco!</button>
+		</div>
+
+		<div id="list-div">
+			<ol id="taco-list">
+			</ol>
 		</div>
 	</body>
 </html>

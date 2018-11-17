@@ -3,7 +3,7 @@ h1 {
 }
 
 select[multiple] {
-	height: 300px;
+	height: 70%;
 }
 
 #selector-div {
@@ -12,8 +12,19 @@ select[multiple] {
     border: 1px black solid;
 }
 
+#create-taco {
+	background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
 .taco-part {
     width: 20%;
-    height: 500px;
+    height: 40vh;
     border: 1px black solid;
 }
