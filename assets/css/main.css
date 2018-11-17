@@ -1,3 +1,19 @@
 h1 {
 	text-align: center;
 }
+
+select[multiple] {
+	height: 300px;
+}
+
+#selector-div {
+    display: flex;
+    flex-direction: row;
+    border: 1px black solid;
+}
+
+.taco-part {
+    width: 20%;
+    height: 500px;
+    border: 1px black solid;
+}
