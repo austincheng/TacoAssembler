@@ -45,10 +45,9 @@ var selectChange = function(part) {
 		for (var option of selected) {
 			if (currentSelection[part].indexOf(option) == -1) {
 				option.selected = false;
-				break;
 			}
 		}
-		error.innerHTML = 'You can only select up to ' + threshold + ' ' + part;
+		error.innerHTML = 'You can only select up to ' + threshold + ' ' + part + '.';
 	} else if (selected.length == 1 || selected.length == threshold - 1) {
 		error.innerHTML = '';
 		currentSelection[part] = selected;
@@ -115,6 +114,12 @@ var createTaco = function(random = false) {
 	} 
 	if (condiments.length === 0) {
 		errorCondiment.innerHTML= 'You must select at least 1 condiment.';
+	}
+	if (mixins.length > 2) {
+		errorMixin.innerHTML = 'You can only select up to 2 mixins.';
+	}
+	if (condiments.length > 3) {
+		errorCondiment.innerHTML = 'You can only select up to 3 condiments.'
 	}
 
 	if (mixins.length > 0 && condiments.length > 0) {
