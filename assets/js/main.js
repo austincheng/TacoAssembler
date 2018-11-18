@@ -1,36 +1,71 @@
-/* Retrives the data for the specific part of the taco and fills the HTML select. */
-var getData = function(part) {
-	var request = new XMLHttpRequest();
-	request.open('GET', 'https://tacos-ocecwkpxeq.now.sh/' + part, true);
-	request.onload = function () {
-		var data = JSON.parse(this.response);
-		if (request.status >= 200 && request.status < 400) {
-			var select = document.getElementById(part);
-			for (var item of data) {
-				var option = document.createElement('option');
-				option.value = item.slug;
-				option.text = item.name;
-				select.add(option);
-			}
-		} else {
-			alert('Could Not Read Data')
-		}
-	}
-
-	request.send();
+/* All parts of the taco. */
+var parts = ['shells', 'baseLayers', 'mixins', 'condiments', 'seasonings'];
+/* Initial retrieval of data. */
+function main() {
+	Promise.all([
+		parts.map(function(part) {
+			getData(part).then(insertData, errorReport)
+		})
+	]).then(finishLoading);
 }
 
-/* Getting all the data. */
-getData('shells');
-getData('baseLayers');
-getData('mixins');
-getData('condiments');
-getData('seasonings');
+/* Enabled buttons and remove loading screen after data is loaded. */
+function finishLoading() {
+	var buttons = document.getElementsByClassName('large-button');
+	for (var button of buttons) {
+		button.disabled = false;
+	}
+	for (var part of parts) {
+		var loadDiv = document.getElementById('load-' + part);
+		var actualDiv = document.getElementById('actual-' + part);
+		loadDiv.style.display = 'none';
+		actualDiv.style.display = 'inline-block'
+	}
+	var outerDivs = document.getElementsByClassName('taco-part');
+	for (var div of outerDivs) {
+		div.classList.remove('loading');
+	}
+}
+
+/* Insert data into select upon retrieval of data. */
+function insertData(allData) {
+	var data = allData['data'];
+	var part = allData['part'];
+	var select = document.getElementById(part);
+	for (var item of data) {
+		var option = document.createElement('option');
+		option.value = item.slug;
+		option.text = item.name;
+		select.add(option);
+	}
+}
+
+/* Report error if promises rejeced. */
+function errorReport(error) {
+	console.error('Could Not Read Data', error);
+}
+
+/* Returns a promise to retrieve the data for the specific part of the taco to fill it in the select. */
+function getData(part) {
+	return new Promise(function(resolve, reject) {
+		var request = new XMLHttpRequest();
+		request.open('GET', 'https://tacos-ocecwkpxeq.now.sh/' + part);
+		request.onload = function() {
+			var data = JSON.parse(this.response);
+			if (request.status >= 200 && request.status < 400) {
+				resolve({'data': data, 'part': part});
+			} else {
+				reject(Error(request.statusText));
+			}
+		}
+		request.send();
+	});
+}
 
 /* Represents what is currently selected in the mixins and condiments. */
 currentSelection = {'mixins': [], 'condiments': []};
 /* Deals with a selection on mixins or condiments and adjusts based on if there was an error. */
-var selectChange = function(part) {
+function selectChange(part) {
 	var select = document.getElementById(part);
 	var selected = getSelectedOptions(select);
 	var error = document.getElementById('error-' + part);
@@ -57,7 +92,7 @@ var selectChange = function(part) {
 }
 
 /* Gets everything that was selected for the given HTML select as a list of texts. */
-var getSelected = function(select) {
+function getSelected(select) {
 	var options = select.options;
 	var selected = [];
 	for (var option of options) {
@@ -69,7 +104,7 @@ var getSelected = function(select) {
 }
 
 /* Gets everything that was selected for the given HTML select as a list of HTML options. */
-var getSelectedOptions = function(select) {
+function getSelectedOptions(select) {
 	var options = select.options;
 	var selected = [];
 	for (var option of options) {
@@ -81,7 +116,7 @@ var getSelectedOptions = function(select) {
 }
 
 /* Formats the list into a grammatical string. */
-var getFormattedString = function(items) {
+function getFormattedString(items) {
 	if (items.length === 1) {
 		return items[0];
 	} else if (items.length == 2) {
@@ -101,7 +136,7 @@ var getFormattedString = function(items) {
 }
 
 /* Creates a taco and adds it to the list, displaying something different whether it was computer generated (random) or not. */
-var createTaco = function(random = false) {
+function createTaco(random = false) {
 	var shell = getSelected(document.getElementById('shells'))[0];
 	var baseLayer = getSelected(document.getElementById('baseLayers'))[0];
 	var mixins = getSelected(document.getElementById('mixins'));
@@ -145,27 +180,27 @@ var createTaco = function(random = false) {
 }
 
 /* Strikes through the text upon mouse over. */
-var strikeText = function(evt) {
+function strikeText(evt) {
 	var li = evt.target;
 	li.style.textDecoration = 'line-through';
 	li.style.cursor = 'pointer';
 }
 
 /* Removes text decoration upon mouse out. */
-var restoreText = function(evt) {
+function restoreText(evt) {
 	var li = evt.target;
 	li.style.textDecoration = 'none';
 	li.style.cursor = 'none';
 }
 
 /* Removes the item from list upon mouse click. */
-var removeText = function(evt) {
+function removeText(evt) {
 	var li = evt.target;
 	li.parentNode.removeChild(li);
 }
 
 /* Creates a random taco and adds it to the list. */
-var randomTaco = function() {
+function randomTaco() {
 	var shells = document.getElementById('shells').options;
 	var baseLayers = document.getElementById('baseLayers').options;
 	var mixins = document.getElementById('mixins').options;
@@ -216,12 +251,12 @@ var randomTaco = function() {
 }
 
 /* Gets a random integer between start (inclusive) and end (exclusive) */
-var getRandomInt = function(start, end) {
+function getRandomInt(start, end) {
 	return Math.floor((Math.random() * (end - start)) + start);
 }
 
 /* Resets what is current selected in mixins and condiments. */
-var resetSelect = function() {
+function resetSelect() {
 	var mixins = document.getElementById('mixins').options;
 	var condiments = document.getElementById('condiments').options;
 	var errorMixin = document.getElementById('error-mixins');
@@ -237,7 +272,7 @@ var resetSelect = function() {
 }
 
 /* Removes all tacos from the list. */
-var removeAllTacos = function() {
+function removeAllTacos() {
 	var list = document.getElementById('taco-list');
 	list.innerHTML = '';
 }

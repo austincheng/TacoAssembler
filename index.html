@@ -10,47 +10,77 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
 		<link rel="icon" type="image/png" href="images/logo.png"/>
 	</head>
-	<body class="disable-scroll">
+	<body class="disable-scroll" onload="main()">
 		<h1>Taco Assembly</h1>
 
 		<div id="selector-div">
-			<div class="taco-part" style="background:#ffcc00">
-				<h2>Shell</h2>
-				<select id="shells">
-				</select>
+			<div class="taco-part loading" style="background:#ffcc00">
+				<div id="load-shells">
+					<div class="loader"></div>
+					<h4>Loading Shells...</h4>
+				</div>
+				<div id="actual-shells" style="display:none">
+					<h2>Shell</h2>
+					<select id="shells">
+					</select>
+				</div>
 			</div>
 
-			<div class="taco-part" style="background:#993333">
-				<h2>Base Layer</h2>
-				<select id="baseLayers">
-				</select>
+			<div class="taco-part loading" style="background:#993333">
+				<div id="load-baseLayers">
+					<div class="loader"></div>
+					<h4>Loading Base Layers...</h4>
+				</div>
+				<div id="actual-baseLayers" style="display:none">
+					<h2>Base Layer</h2>
+					<select id="baseLayers">
+					</select>
+				</div>
 			</div>
 
-			<div class="taco-part" style="background:#00cc66">
-				<h2>Mixins (Limit 2)</h2>
-				<p id="error-mixins" style="color:red"></p>
-				<select id="mixins" onchange="selectChange('mixins')" multiple>
-				</select>
+			<div class="taco-part loading" style="background:#00cc66">
+				<div id="load-mixins">
+					<div class="loader"></div>
+					<h4>Loading Mixins...</h4>
+				</div>
+				<div id="actual-mixins" style="display:none">
+					<h2>Mixins (Limit 2)</h2>
+					<p id="error-mixins" style="color:red"></p>
+					<select id="mixins" onchange="selectChange('mixins')" multiple>
+					</select>
+				</div>
 			</div>
 
-			<div class="taco-part" style="background:#ffff00">
-				<h2>Condiments (Limit 3)</h2>
-				<p id="error-condiments" style="color:red"></p>
-				<select id="condiments" onchange="selectChange('condiments')" multiple>
-				</select>
+			<div class="taco-part loading" style="background:#ffff00">
+				<div id="load-condiments">
+					<div class="loader"></div>
+					<h4>Loading Condiments...</h4>
+				</div>
+				<div id="actual-condiments" style="display:none">
+					<h2>Condiments (Limit 3)</h2>
+					<p id="error-condiments" style="color:red"></p>
+					<select id="condiments" onchange="selectChange('condiments')" multiple>
+					</select>
+				</div>
 			</div>
 
-			<div class="taco-part" style="background:#ff0000">
-				<h2>Seasoning</h2>
-				<select id="seasonings">
-				</select>
+			<div class="taco-part loading" style="background:#ff0000">
+				<div id="load-seasonings">
+					<div class="loader"></div>
+					<h4>Loading Seasonings...</h4>
+				</div>
+				<div id="actual-seasonings" style="display:none">
+					<h2>Seasoning</h2>
+					<select id="seasonings">
+					</select>
+				</div>
 			</div>						
 		</div>
 
 		<div id="create-taco-div" align="center">
-			<button id="create-taco" onclick="createTaco()" class="large-button">Create Taco!</button>
-			<button id="random-taco" onclick="randomTaco()" class="large-button">Random Taco!</button>
-			<button id="reset-select" onclick="resetSelect()" class="large-button">Reset Select</button>
+			<button id="create-taco" onclick="createTaco()" class="large-button" disabled>Create Taco!</button>
+			<button id="random-taco" onclick="randomTaco()" class="large-button" disabled>Random Taco!</button>
+			<button id="reset-select" onclick="resetSelect()" class="large-button" disabled>Reset Select</button>
 		</div>
 
 		<div id="list-div" class="scrollable">
