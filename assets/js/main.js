@@ -224,12 +224,16 @@ var getRandomInt = function(start, end) {
 var resetSelect = function() {
 	var mixins = document.getElementById('mixins').options;
 	var condiments = document.getElementById('condiments').options;
+	var errorMixin = document.getElementById('error-mixins');
+	var errorCondiment = document.getElementById('error-condiments');
 	for (var mixin of mixins) {
 		mixin.selected = false;
 	}
 	for (var condiment of condiments) {
 		condiment.selected = false;
 	}
+	errorMixin.innerHTML = '';
+	errorCondiment.innerHTML = '';
 }
 
 /* Removes all tacos from the list. */
