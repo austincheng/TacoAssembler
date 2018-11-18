@@ -1,6 +1,8 @@
 /* All parts of the taco. */
 var parts = ['shells', 'baseLayers', 'mixins', 'condiments', 'seasonings'];
-/* Initial retrieval of data. */
+/* Initial retrieval of data. Although the API calls are very fast anyway, I still consider
+the edge case where data isn't finished loading and they use the web application, so I use
+promises to make sure they are all done loading. */
 function main() {
 	Promise.all([
 		parts.map(function(part) {
