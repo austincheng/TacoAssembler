@@ -15,10 +15,12 @@ function finishLoading() {
 	for (var button of buttons) {
 		button.disabled = false;
 	}
-	for (var part of parts) {
-		var loadDiv = document.getElementById('load-' + part);
-		var actualDiv = document.getElementById('actual-' + part);
+	var loadDivs = document.getElementsByClassName('load-div');
+	for (var loadDiv of loadDivs) {
 		loadDiv.style.display = 'none';
+	}
+	var actualSelectors = document.getElementsByClassName('actual-selector');
+	for (var actualDiv of actualSelectors) {
 		actualDiv.style.display = 'inline-block'
 	}
 	var outerDivs = document.getElementsByClassName('taco-part');
